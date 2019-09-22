@@ -43,8 +43,8 @@
 *.log
 
 # Visual Studio build directory
-x64/
-Debug/
+bin/
+obj/
 
 # NuGet packages
 packages/
