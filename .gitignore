@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio options file
+*.suo
+
+# Visual Studio build directory
+x64/
+
+# NuGet packages
+packages/
+
