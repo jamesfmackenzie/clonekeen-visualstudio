@@ -36,7 +36,9 @@
 
 # Visual Studio build directory
 x64/
+Debug/
 
 # NuGet packages
 packages/
+
 
