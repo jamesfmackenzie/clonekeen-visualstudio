@@ -1,6 +1,7 @@
 
 #include "../keen.h"
 #include "autolight.fdh"
+#include "autolight.h"
 
 float sin_table[366];
 float cos_table[366];

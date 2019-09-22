@@ -2,6 +2,7 @@
 // Real-time Map Editor module
 #include "../keen.h"
 #include "editor.fdh"
+#include "editor.h"
 
 #define MAP_IN_PLAY			0
 #define MAP_ORIGINAL		1

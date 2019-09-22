@@ -1,5 +1,6 @@
 #include "../keen.h"
 #include "menu_editor.fdh"
+#include "menu_editor.h"
 #include "../menu.h"
 
 extern uchar *edverifyclear_menu[MAXM];
