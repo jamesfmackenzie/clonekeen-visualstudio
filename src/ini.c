@@ -5,6 +5,10 @@
 #include "keen.h"			// for fileopen() define on platforms that don't use it
 #include "ini.fdh"
 
+#if defined(WIN32)
+#include "platform\win32functions.h"
+#endif
+
 // name of the config file for keen, and the default if NULL is passed as
 // the ini filename to a read/write function.
 char *configfile = "keen.conf";

@@ -14,6 +14,9 @@
 #include "keen.h"
 #include "maploader.fdh"
 
+#if defined(WIN32)
+#include "platform\win32functions.h"
+#endif
 
 // Defines for which numbers in the object layer will spawn which enemies
 // for OBJ_ICECANNON: xoff/yoff is a vector for the ice chunk to be thrown at.
@@ -786,3 +789,5 @@ int special_start;
 	Console_Msg("Saved '%s'.", fname);
 	return 0;
 }
+
+
