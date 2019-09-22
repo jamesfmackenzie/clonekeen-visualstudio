@@ -33,6 +33,14 @@
 
 # Visual Studio options file
 *.suo
+*.user
+
+# Visual Studio IntelliSense files
+*.opensdf
+*.sdf
+
+# Logs
+*.log
 
 # Visual Studio build directory
 x64/
