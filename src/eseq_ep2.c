@@ -97,6 +97,7 @@ int state, timer, spawnedcount;
   fadecontrol.curamt = 0;
   fadecontrol.fadetimer = 0;
   tantalus_animframe = 0;
+  tantalus_animtimer = 0;
   timer = 0;
   do
   {
@@ -589,6 +590,8 @@ int afterfadewaittimer;
 
   lastenterstate = 1;
   downtimer = 0;
+  afterfadewaittimer = 0;
+
   do
   {
     // execute the current command in the queue
