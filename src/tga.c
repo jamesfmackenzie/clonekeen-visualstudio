@@ -1,14 +1,16 @@
 // Targa image loader, included from "vgatiles.c"
 #include "tga.h"
+#include <Windows.h>
+#include <stdio.h>
 
-char LoadTGA(char *file, uchar **image, int *widthout, int *heightout)
+char LoadTGA(char *file, UCHAR **image, int *widthout, int *heightout)
 // load a 32-bit uncompressed RGBA targa file, and return a pointer to
 // the raw image data. The width and height of the image are returned as well.
 {
 TGA_HEADER header;
 FILE *fp;
 int bytesperpixel;
-ulong imgdatasize;
+ULONG imgdatasize;
 
 	if (!(fp=fopen(file, "rb")))
 	{
