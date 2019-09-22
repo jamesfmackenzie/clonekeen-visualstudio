@@ -1,7 +1,7 @@
 // extension module to support 256-color graphics in CloneKeen
 #include "keen.h"
 #include "vgatiles.fdh"
-#include "tga.c"
+#include "tga.h"
 
 extern int palette_ncolors;
 
