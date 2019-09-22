@@ -15,16 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\platform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\console.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\customepisode.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\eseq_ep2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\fileio.c">
@@ -171,9 +165,6 @@
     <ClCompile Include="src\ai\ninja.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ai\platform.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ai\platvert.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -228,12 +219,6 @@
     <ClCompile Include="src\cinematics\TBC.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\platform\stub.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\platform\win32.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\scale2x\pixel.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -244,12 +229,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scale2x\scalebit.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scale2x\scalerx.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scale2x\scalex.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sdl\keydrv.c">
@@ -264,10 +243,25 @@
     <ClCompile Include="src\sdl\viddrv.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\tileattr\tileattr.c">
+    <ClCompile Include="src\scale2x\file.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\scale2x\file.c">
+    <ClCompile Include="src\ai\platform.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bootstrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\editor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\autolight.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor\menu_editor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\win32functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -354,6 +348,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\editor\ghosting.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\autolight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor\menu_editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ini.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\win32functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
