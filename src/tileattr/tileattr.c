@@ -797,7 +797,7 @@ change_episode: ;
   }
 
   sprintf(tempbuf, "CloneKeen Tile Attribute Editor %s - Episode %d (%d tiles)", TA_VERSION, episode, NumTiles);
-  SDL_WM_SetCaption(tempbuf);
+  SDL_WM_SetCaption(tempbuf, NULL);
   
   if (NumTiles <= seltile)
   {
