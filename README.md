@@ -1,8 +1,8 @@
 # clonekeen (Visual C++)
 
-A very nearly complete clone of one of the classic DOS game, Commander Keen: Invasion of the Vorticons by ID. The game is written in pure C, uses SDL, and is generally very easy to compile on most platforms
+A Visual Studio port of CloneKeen
 
-The original author is Caitlin Shaw. For more info see http://clonekeen.sourceforge.net/?nav=main
+CloneKeen is very nearly complete clone of one of the classic DOS game, Commander Keen: Invasion of the Vorticons by ID. The game is written in pure C, uses SDL, and is generally very easy to compile on most platforms. The original author is Caitlin Shaw. For more info see http://clonekeen.sourceforge.net/?nav=main
 
 This version has been migrated from Makefile to a Visual Studio Project and now uses NuGet. Should be very easy to build and run with Visual Studio:
 
