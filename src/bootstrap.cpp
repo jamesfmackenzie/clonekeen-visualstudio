@@ -8,7 +8,6 @@
 	This code is in C++ because some platforms (Haiku) require it.
 */
 
-
 extern "C"
 {
 	int LoadDirectoryListing(char *path);
