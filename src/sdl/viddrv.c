@@ -215,7 +215,7 @@ char VidDrv_Start(void)
 {
 	if (allocmem()) return 1;
 	
-	putenv("SDL_VIDEO_CENTERED=1");
+	_putenv("SDL_VIDEO_CENTERED=1");
 	
 	if (!scrollbuf)
 	{
