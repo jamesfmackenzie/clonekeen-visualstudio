@@ -80,7 +80,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\James\Downloads\SDL-devel-1.2.15-VC\SDL-1.2.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -246,10 +246,6 @@
     <ClInclude Include="src\sounds.h" />
     <ClInclude Include="src\stamp.h" />
     <ClInclude Include="src\tga.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\Users\James\Downloads\SDL-devel-1.2.15-VC\SDL-1.2.15\lib\x64\SDL.lib" />
-    <Library Include="..\..\Users\James\Downloads\SDL-devel-1.2.15-VC\SDL-1.2.15\lib\x64\SDLmain.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
