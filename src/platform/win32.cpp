@@ -1,32 +1,21 @@
 
 #include <windows.h>
-
-extern "C"
-{
-	int LoadDirectoryListing(char *path);
-	const char *GetFileAtIndex(int fno);
-	char GetIsDirectory(int fno);
-	void FreeDirectoryListing(void);
-
-	void platform_msgbox(const char *message);
-
-	// these might be ACCESSED by the C++ code, they are not actually defined here.
-	void lprintf(const char *fmt, ...);
-	int KeenMain(int argc, char *argv[]);
-};
+#include <stdint.h>
+#include <ctype.h>
+#include <SDL.h>
 
 #define MAX_FILES_TO_RETRIEVE		500
-struct
+static struct
 {
 	char *fname;
-	ULONG attributes;
+	uint32_t attributes;
 } dirlist[MAX_FILES_TO_RETRIEVE];
 
 /*
 void c------------------------------() {}
 */
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	return KeenMain(argc, argv);
 }
@@ -44,33 +33,33 @@ void c------------------------------() {}
 // into memory, and return the number of files and subdirectories in the directory.
 int LoadDirectoryListing(char *path)
 {
-char searchstr[MAX_PATH];
-HANDLE SHandle;
-WIN32_FIND_DATA	wfd;
-int curfile = 0;
+	char searchstr[MAX_PATH];
+	HANDLE SHandle;
+	WIN32_FIND_DATA	wfd;
+	int curfile = 0;
 
 	strcpy(searchstr, path);
 	strcat(searchstr, "*");
 	lprintf("GetDirListing: '%s'\n", searchstr);
-	
+
 	FreeDirectoryListing();
-	
+
 	if ((SHandle = FindFirstFile(searchstr, &wfd)) != INVALID_HANDLE_VALUE)
 	{
 		do
 		{
 			if (wfd.cFileName[0] != '.')
 			{
-				dirlist[curfile].fname = strdup(wfd.cFileName);
+				dirlist[curfile].fname = _strdup(wfd.cFileName);
 				if (!dirlist[curfile].fname) { FreeDirectoryListing(); return 0; }
-				
+
 				dirlist[curfile].attributes = wfd.dwFileAttributes;
 				curfile++;
 			}
-			
-		} while(FindNextFile(SHandle, &wfd) && curfile < MAX_FILES_TO_RETRIEVE);
+
+		} while (FindNextFile(SHandle, &wfd) && curfile < MAX_FILES_TO_RETRIEVE);
 	}
-	
+
 	return curfile;
 }
 
@@ -88,14 +77,14 @@ const char *GetFileAtIndex(int fno)
 // returns nonzero if index "fno" is a directory
 char GetIsDirectory(int fno)
 {
-	return (dirlist[fno].attributes & FILE_ATTRIBUTE_DIRECTORY) ? 1:0;
+	return (dirlist[fno].attributes & FILE_ATTRIBUTE_DIRECTORY) ? 1 : 0;
 }
 
 // free the memory used by LoadDirListing
 void FreeDirectoryListing(void)
 {
-int i;
-	for(i=0;i<MAX_FILES_TO_RETRIEVE;i++)
+	int i;
+	for (i = 0; i<MAX_FILES_TO_RETRIEVE; i++)
 	{
 		if (dirlist[i].fname)
 		{
@@ -108,36 +97,5 @@ int i;
 /*
 void c------------------------------() {}
 */
-
-int strcasecmp(const char *a, const char *b)
-{
-	return stricmp(a, b);
-}
-
-// implementation of strcasestr(), as mingw doesn't have it.
-// this version only returns whether or not the needle is present,
-// it does not return the position.
-char *strcasestr(const char *haystack, const char *needle)
-{
-int i;
-int matchamt=0;
-
-	for(i=0;i<haystack[i];i++)
-	{
-		if (tolower(haystack[i]) != tolower(needle[matchamt]))
-		{
-			matchamt = 0;
-		}
-		if (tolower(haystack[i]) == tolower(needle[matchamt]))
-		{
-			matchamt++;
-			if (needle[matchamt]==0) return (char *)1;
-		}
-	}
-	
-	return 0;
-}
-
-
 
 
