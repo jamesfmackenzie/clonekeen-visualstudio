@@ -1,11 +1,25 @@
 
 #include <windows.h>
 
+extern "C"
+{
+	int LoadDirectoryListing(char *path);
+	const char *GetFileAtIndex(int fno);
+	char GetIsDirectory(int fno);
+	void FreeDirectoryListing(void);
+
+	void platform_msgbox(const char *message);
+
+	// these might be ACCESSED by the C++ code, they are not actually defined here.
+	void lprintf(const char *fmt, ...);
+	int KeenMain(int argc, char *argv[]);
+};
+
 #define MAX_FILES_TO_RETRIEVE		500
 struct
 {
 	char *fname;
-	ulong attributes;
+	ULONG attributes;
 } dirlist[MAX_FILES_TO_RETRIEVE];
 
 /*
@@ -48,7 +62,7 @@ int curfile = 0;
 			if (wfd.cFileName[0] != '.')
 			{
 				dirlist[curfile].fname = strdup(wfd.cFileName);
-				if (!dirlist[curfile].fname) { FreeDirListing(); return 0; }
+				if (!dirlist[curfile].fname) { FreeDirectoryListing(); return 0; }
 				
 				dirlist[curfile].attributes = wfd.dwFileAttributes;
 				curfile++;

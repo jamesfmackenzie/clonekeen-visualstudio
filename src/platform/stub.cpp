@@ -1,4 +1,18 @@
 
+extern "C"
+{
+	int LoadDirectoryListing(char *path);
+	const char *GetFileAtIndex(int fno);
+	char GetIsDirectory(int fno);
+	void FreeDirectoryListing(void);
+
+	void platform_msgbox(const char *message);
+
+	// these might be ACCESSED by the C++ code, they are not actually defined here.
+	void lprintf(const char *fmt, ...);
+	int KeenMain(int argc, char *argv[]);
+};
+
 #define NUM_PHONY_FILES		6
 static const char *phony_files[] =
 {
