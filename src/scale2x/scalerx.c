@@ -546,7 +546,7 @@ err:
 }
 
 void version(void) {
-	printf(PACKAGE " v" VERSION " by Andrea Mazzoleni\n");
+	printf("Scale2x v2.0 by Andrea Mazzoleni\n");
 }
 
 void usage(void) {
