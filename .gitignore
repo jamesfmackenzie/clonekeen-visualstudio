@@ -31,12 +31,11 @@
 *.out
 *.app
 
-# Visual Studio options file
+# Visual Studio
 *.suo
-
-# Visual Studio IntelliSense files
 *.opensdf
 *.sdf
+*.opendb
 
 # Logs
 *.log
