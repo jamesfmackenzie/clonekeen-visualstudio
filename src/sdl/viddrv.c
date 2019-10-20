@@ -3,8 +3,8 @@
   platform-specific.
 */
 #include "../keen.h"
-#include <SDL_getenv.h>
 #include "viddrv.fdh"
+#include <SDL.h>
 
 void lprintf(const char *str, ...);
 
@@ -12,7 +12,10 @@ int border_width=0, border_height=0;
 
 int window_width;
 int window_height;
-SDL_Surface *screen = NULL;              // the actual video memory/window
+SDL_Window* sdlWindow;					// the actual window
+SDL_Renderer* sdlRenderer;				// render - new concept in SDL2
+SDL_Texture* sdlTexture;
+SDL_Surface *screen = NULL;              // the actual video memory
 SDL_Surface *ScrollSurface = NULL;       // scroll buffer
 // temporary buffer if using scale2x, or equal to "screen" if not
 SDL_Surface *BlitSurface = NULL;
@@ -169,7 +172,43 @@ int blit_w, blit_h, blit_sw, blit_sh;
 }
 
 // update the contents of the display
-void VidDrv_flipbuffer() { SDL_Flip(screen); }
+void VidDrv_flipbuffer() {
+	/*
+	The mechanism below might be a superior approach when dealing with 8-bit palletized pixel formats (like we have)
+	
+	For more detail see:
+	- http://sandervanderburg.blogspot.com/2014/05/rendering-8-bit-palettized-surfaces-in.html
+	- https://github.com/svanderburg/SDL_ILBM/blob/e3795c0d7cfc495fdbdbe511a08b827fc064d87c/src/ilbmviewer/viewerdisplay.c
+
+	This approach does requires the window surface (i.e. screen) me to have a non-indexed pixel format (e.g. 32-bit). The texture can stay 8-bit
+
+	Currently this is not working well because of an odd issue with the Blit Buffer
+
+	void *pixels;
+	int pitch;
+
+	if (SDL_LockTexture(sdlTexture, NULL, &pixels, &pitch) < 0)
+	{
+		SDL_Log("Cannot lock texture: %s\n", SDL_GetError());
+	}
+
+	if (SDL_ConvertPixels(screen->w, screen->h,
+		screen->format->format,
+		screen->pixels, screen->pitch,
+		SDL_PIXELFORMAT_RGBA8888,
+		pixels, pitch) < 0)
+	{
+		SDL_Log("Cannot convert pixels: %s\n", SDL_GetError());
+	}
+
+	SDL_UnlockTexture(sdlTexture);	
+	*/
+
+	SDL_UpdateTexture(sdlTexture, NULL, screen->pixels, screen->pitch);
+	SDL_RenderClear(sdlRenderer);
+	SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+	SDL_RenderPresent(sdlRenderer);
+}
 
 
 // functions to directly set and retrieve pixels from display
@@ -200,14 +239,16 @@ void VidDrv_pal_set(uchar colour, uchar red, uchar green, uchar blue)
 	MyPalette[colour].r = red;
 	MyPalette[colour].g = green;
 	MyPalette[colour].b = blue;
+	MyPalette[colour].a = 255;
 }
 
 // applies all changes to the palette made with pal_set
 void VidDrv_pal_apply(void)
 {
-	SDL_SetColors(screen, (SDL_Color *)&MyPalette, 0, 256);
-	if (ScrollSurface) SDL_SetColors(ScrollSurface, (SDL_Color *)&MyPalette, 0, 256);
-	if (BlitSurface) SDL_SetColors(BlitSurface, (SDL_Color *)&MyPalette, 0, 256);
+	// TODO: maybe there is an issue with the palettes here	
+	SDL_SetPaletteColors(screen->format->palette, (SDL_Color *)&MyPalette, 0, 256);
+	if (ScrollSurface) SDL_SetPaletteColors(ScrollSurface->format->palette, (SDL_Color *)&MyPalette, 0, 256);
+	if (BlitSurface) SDL_SetPaletteColors(BlitSurface->format->palette, (SDL_Color *)&MyPalette, 0, 256);
 }
 
 // starts up the video driver
@@ -230,7 +271,7 @@ char VidDrv_Start(void)
 		return 1;
 	}
 	
-	SDL_WM_SetCaption("CloneKeen", NULL);
+	//SDL_WM_SetCaption("CloneKeen", NULL);
 	
 	atexit(SDL_Quit);
 	return VidDrv_CreateSurfaces();
@@ -238,17 +279,17 @@ char VidDrv_Start(void)
 
 char VidDrv_CreateSurfaces(void)
 {
-//create the initial window
+	//create the initial window
 	window_is_fullscreen = 7;
 	VidDrv_SetFullscreen(options[OPT_FULLSCREEN]);
-
 
   lprintf("Creating ScrollSurface (%dx%d)\n", SCROLLBUF_XSIZE, SCROLLBUF_YSIZE);
   if (!scrollbuf) { crash("VidDrv_CreateSurfaces: 'scrollbuf' was never allocated!"); return 1; }
   ScrollSurface = SDL_CreateRGBSurfaceFrom(scrollbuf, SCROLLBUF_XSIZE, SCROLLBUF_YSIZE, 8, SCROLLBUF_XSIZE, screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
   if (!ScrollSurface)
   {
-     lprintf("VidDrv_Start(): Couldn't create ScrollSurface!\n");
+	  SDL_Log("SDL_CreateRGBSurface() failed: %s", SDL_GetError());
+	  lprintf("VidDrv_Start(): Couldn't create ScrollSurface!\n", SDL_GetError());
      return 1;
   }
 
@@ -302,10 +343,9 @@ int w,h;
 		border_width = border_height = 0;
 	}
 	
-	opts = SDL_HWSURFACE | SDL_HWPALETTE;
 	if (fs_on)
 	{
-		opts |= SDL_FULLSCREEN;
+		opts |= SDL_WINDOW_FULLSCREEN;
 	}
 	
 	if (screen)
@@ -317,7 +357,27 @@ int w,h;
 	w = window_width+border_width;
 	h = window_height+border_height;
 	lprintf("VidDrv_SetFullscreen: Setting window size to %dx%d\n", w, h);
-	screen = SDL_SetVideoMode(w,h, 8, opts);
+
+	screen = SDL_CreateRGBSurface(0, w, h, 8,
+		0, 0, 0, 0);
+
+	//SDL_CreateWindowAndRenderer(w, h, SDL_WINDOW_SHOWN, &sdlWindow, &sdlRenderer);
+
+	sdlWindow = SDL_CreateWindow("CloneKeen", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, w, h, SDL_WINDOW_SHOWN);
+	
+	sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, 0);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+	SDL_RenderSetLogicalSize(sdlRenderer,
+		w, h);
+
+
+	sdlTexture = SDL_CreateTexture(sdlRenderer,
+		SDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED8, SDL_PACKEDORDER_XRGB, SDL_PACKEDLAYOUT_332, 8, 1), //TODO: play with this. We are close
+		//SDL_PIXELFORMAT_RGB332,
+		//SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_STREAMING,
+		w, h);
+
 	if (!screen)
 	{
 		crash("VidDrv_Start(): Couldn't create a SDL surface: %s\n", SDL_GetError());

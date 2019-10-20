@@ -15,12 +15,12 @@ uchar mouseL, mouseR;
 
 uchar setting_keymap_ktindex = 0;
 uchar setting_keymap_keyno = 0;
-uchar sdl_keysdown[SDLK_LAST];		// this is used by the menus
-uchar sdl_lastkeysdown[SDLK_LAST];	// this is used by the editor
+uchar sdl_keysdown[SDL_NUM_SCANCODES];		// this is used by the menus
+uchar sdl_lastkeysdown[SDL_NUM_SCANCODES];	// this is used by the editor
 
 // this is a lookup table of SDL keys -> keytable keys.
 // for example keymappings[SDLK_LEFT] might contain the value 'KLEFT'.
-uchar keymappings[SDLK_LAST];
+uchar keymappings[SDL_NUM_SCANCODES];
 #define MAX_KEYS_PER_CONTROL		2
 typedef struct
 {
@@ -74,7 +74,7 @@ int i,j,k;
 			
 		k = 0;
 		// backwards so Lctrl comes up before Rctrl
-		for(j=SDLK_LAST-1;j>=0;j--)
+		for(j=SDL_NUM_SCANCODES-1;j>=0;j--)
 		{
 			if (keymappings[j]==i)
 			{
@@ -168,7 +168,7 @@ char *beingset = "*****";
 char knbuf[40];
 uchar *KeyDrv_GetKeyMapping(uchar keytable_index, uchar key_no)
 {
-SDLKey ksym;
+int ksym;
 char *kname;
 
 	if (KeyDrv_KeyMappingBeingSet(keytable_index, key_no))
@@ -198,12 +198,14 @@ char *kname;
 // by messing up the keyboard mapping).
 char KeyDrv_KeyIsDown(int sdl_key)
 {
-	return sdl_keysdown[sdl_key];
+	//return sdl_keysdown[sdl_key];
+	return NULL;
 }
 
 char KeyDrv_LastKeyIsDown(int sdl_key)
 {
-	return sdl_lastkeysdown[sdl_key];
+	//return sdl_lastkeysdown[sdl_key];
+	return NULL;
 }
 
 void KeyDrv_CopyLastKeys(void)

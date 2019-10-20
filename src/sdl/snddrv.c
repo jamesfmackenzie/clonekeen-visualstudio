@@ -46,7 +46,7 @@ char name[32];
 	lprintf("  freq: %d\n", AudioSpec.freq);
 	lprintf("  channels: %d\n", AudioSpec.channels);
 	lprintf("  audio buffer size: %d\n", AudioSpec.size);
-	lprintf("Using audio driver: %s\n", SDL_AudioDriverName(name, 32));
+	//lprintf("Using audio driver: %s\n", SDL_AudioDriverName(name, 32));
 	
 	sound_stop_all();
 	SDL_PauseAudio(0);
